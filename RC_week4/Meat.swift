@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 class Meat: UIImageView{
-    var meatScore = 20
+    var meatScore = 0
     var frontTimer = Timer()
     var backTimer = Timer()
     var isRunning = false
@@ -59,8 +59,8 @@ class Meat: UIImageView{
     }
     
     func finalScore(){
-        if (self.frontElapsedTime > 5) && (self.frontElapsedTime < 7){
-            if (self.backElapsedTime > 5) && (self.backElapsedTime < 7){
+        if (self.frontElapsedTime > 3) && (self.frontElapsedTime < 5){
+            if (self.backElapsedTime > 3) && (self.backElapsedTime < 5){
                 self.meatScore = 20
             }
         }else{

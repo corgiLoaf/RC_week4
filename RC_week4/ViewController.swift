@@ -18,11 +18,11 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var meat1: UIImageView!
     
-    let duration: Double = 100 // duration in seconds
+    let duration: Double = 30 // duration in seconds
     var timer: Timer?
     var progressView: UIProgressView!
     var timeElapsed: Double = 0
-    var score: Int = 100
+    var score: Int = 0
     let screenSize: CGRect = UIScreen.main.bounds
     
     let roastTime = 3.0
@@ -31,28 +31,22 @@ class ViewController: UIViewController {
     var objects: [Meat] = []
     let frame =  CGRect(x: 100, y: 100, width: 100, height: 50)
     
-//    let object1: Meat = {
-//
-//        let view = Meat()
-//        view.backgroundColor = .clear
-//        view.frame = CGRect(x: 100, y: 100, width: 100, height: 50)
-//        view.image = UIImage(named: "meat1_front")
-//
-//        //view.layer.zPosition = CGFloat(Float.greatestFiniteMagnitude)
-//
-//        return view
-//    }()
-//
+    let location: [CGPoint] = [CGPoint(x: 80.0, y: 80.0), CGPoint(x:100.0, y:120.0), CGPoint(x:145.0, y:70.0), CGPoint(x:125.0, y:60.0), CGPoint(x:180.0, y:90.0), CGPoint(x:190.0, y:120)]
     
     
     var endView: UIView = {
         let screenSize: CGRect = UIScreen.main.bounds
         var endview = UIView(frame: CGRect(x: 0, y: 0, width: screenSize.width, height: screenSize.height))
-        endview.backgroundColor = .white.withAlphaComponent(0.5)
+        endview.backgroundColor = .white.withAlphaComponent(0.7)
         
-        let restartButton = UIButton(frame: CGRect(x: screenSize.width/2 - 100, y: screenSize.height/2 - 50, width: 150, height: 50))
-        restartButton.setTitle("재시작", for: .normal)
-        restartButton.backgroundColor = .blue
+        let restartButton = UIButton(frame: CGRect(x: screenSize.width/2 - 40, y: screenSize.height/2 - 50, width: 80, height: 60))
+        //restartButton.setTitle("재시작", for: .normal)
+        restartButton.center = CGPoint(x: screenSize.width/2, y: screenSize.height/2 + 40.0)
+//        restartButton.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        let symbolConfig = UIImage.SymbolConfiguration(font: UIFont.systemFont(ofSize: 32, weight: .bold))
+        restartButton.setImage(UIImage(systemName: "gobackward", withConfiguration: symbolConfig), for: .normal)
+        restartButton.backgroundColor = UIColor(named: "pointColor")
+        restartButton.tintColor = .white
 //        restartButton.backgroundColor = UIColor(named: "backgroundColor")
         restartButton.layer.cornerRadius = 10
 
@@ -84,10 +78,12 @@ class ViewController: UIViewController {
     
     func reset(){
         score = 0
-        for i in 0..<3{
+        for i in 0..<5{
             let object = Meat()
             object.backgroundColor = .clear
-            object.frame = CGRect(x: CGFloat(80 + (i*20)), y:  CGFloat(80 + (i*20)), width: frame.width, height: frame.height)
+            object.frame.origin = location[i]
+            object.frame.size = CGSize(width: frame.width, height: frame.height)
+//            object.frame = CGRect(x: CGFloat(80 + (i*20)), y:  CGFloat(80 + (i*20)), width: frame.width, height: frame.height)
             object.image = UIImage(named: "meat1_front")
             self.view.addSubview(object)
             self.view.bringSubviewToFront(object)
@@ -99,13 +95,6 @@ class ViewController: UIViewController {
             object.isUserInteractionEnabled = true
             objects.append(object)
         }
-//        self.view.addSubview(object1)
-//        self.view.bringSubviewToFront(object1)
-//        let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
-//        object1.addGestureRecognizer(panGestureRecognizer)
-//        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(sender:)))
-//        object1.addGestureRecognizer(tapGesture)
-//        object1.isUserInteractionEnabled = true
         
         
         scoreView(view: scoreBox)
@@ -118,11 +107,9 @@ class ViewController: UIViewController {
     
     func timeProgress(){
         progressView = UIProgressView(progressViewStyle: .default)
-//        progressView.frame = CGRect(x: view.frame.maxX - 40, y: 20, width: view.frame.height - 40, height: 10)
-//        progressView.frame = CGRect(x: view.frame.maxX - 50, y: 50, width: view.frame.height - 50, height: 10)
-//        progressView.transform = CGAffineTransform(rotationAngle: .pi / 2)
-        progressView.frame = CGRect(x: 50, y: 50, width: view.frame.width - 100, height: 10)
+        progressView.frame = CGRect(x: 50, y: 20, width: view.frame.width - 100, height: 40)
         progressView.progress = 0
+        progressView.tintColor = UIColor(named: "pointColor")
         //progressView.transform = CGAffineTransform(rotationAngle: .pi / 2)
         self.view.addSubview(progressView)
 
@@ -143,13 +130,14 @@ class ViewController: UIViewController {
     }
     
     func timerEnded() {
-        // Timer has ended, do something here
-        // Show the restart button
-        print("Ended")
         
         // score label
-        let finalScoreLabel = UILabel(frame: CGRect(x: screenSize.width/2 - 100, y: screenSize.height/2 - 100, width: 150, height: 50))
-        finalScoreLabel.text = "\(score)"
+//        CGRect(x: screenSize.width/2 - 40, y: screenSize.height/2 - 50, width: 80, height: 60)
+        let finalScoreLabel = UILabel(frame: CGRect(x: screenSize.width/2 , y: screenSize.height/2, width: 100, height: 100))
+        finalScoreLabel.center = CGPoint(x: (view.center.x), y: view.center.y - CGFloat(30.0))
+        finalScoreLabel.text = "\(score) 점"
+        finalScoreLabel.font = UIFont.systemFont(ofSize: 30, weight: .bold)
+        //finalScoreLabel.backgroundColor = .yellow
         finalScoreLabel.textAlignment = .center
         endView.addSubview(finalScoreLabel)
         self.view.addSubview(endView)
@@ -169,6 +157,7 @@ class ViewController: UIViewController {
     
     @objc func handlePan(sender: UIPanGestureRecognizer) {
         if sender.state == .ended {
+            //print("\(sender.view?.frame.origin)")
             
             if sender.view!.frame.intersects(grilImageView.frame) {
                 //print("here")
@@ -181,8 +170,9 @@ class ViewController: UIViewController {
                 }
             }else if sender.view!.frame.intersects(submitZone.frame) {
                 if let tappedView = sender.view as? Meat{
-                    //tappedView.finalScore()
+                    tappedView.finalScore()
                     self.score += tappedView.meatScore
+                    //print("score: \(tappedView.meatScore)")
                 }
                 sender.view?.removeFromSuperview()
                 scoreLabel.text = "\(score)"
