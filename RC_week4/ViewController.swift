@@ -18,24 +18,32 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var meat1: UIImageView!
     
-    let duration: Double = 5 // duration in seconds
+    let duration: Double = 100 // duration in seconds
     var timer: Timer?
     var progressView: UIProgressView!
     var timeElapsed: Double = 0
     var score: Int = 100
     let screenSize: CGRect = UIScreen.main.bounds
     
-    let object: UIView = {
-        let imageView = UIImageView(image: UIImage(named: "meat1"))
-        imageView.frame =  CGRect(x: 100, y: 100, width: 100, height: 200)
-        
-        let view = UIView()
-        //view.addSubview(imageView)
-        view.backgroundColor = .red
-        view.frame = CGRect(x: 100, y: 100, width: 100, height: 50)
-        //view.layer.zPosition = CGFloat(Float.greatestFiniteMagnitude)
-        return view
-    }()
+    let roastTime = 3.0
+    let overcookTime = 5.0
+    
+    var objects: [Meat] = []
+    let frame =  CGRect(x: 100, y: 100, width: 100, height: 50)
+    
+//    let object1: Meat = {
+//
+//        let view = Meat()
+//        view.backgroundColor = .clear
+//        view.frame = CGRect(x: 100, y: 100, width: 100, height: 50)
+//        view.image = UIImage(named: "meat1_front")
+//
+//        //view.layer.zPosition = CGFloat(Float.greatestFiniteMagnitude)
+//
+//        return view
+//    }()
+//
+    
     
     var endView: UIView = {
         let screenSize: CGRect = UIScreen.main.bounds
@@ -75,21 +83,37 @@ class ViewController: UIViewController {
     }
     
     func reset(){
-        score = 50
-        self.view.addSubview(object)
-        self.view.bringSubviewToFront(object)
-        let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
-        object.addGestureRecognizer(panGestureRecognizer)
-        object.isUserInteractionEnabled = true
+        score = 0
+        for i in 0..<3{
+            let object = Meat()
+            object.backgroundColor = .clear
+            object.frame = CGRect(x: CGFloat(80 + (i*20)), y:  CGFloat(80 + (i*20)), width: frame.width, height: frame.height)
+            object.image = UIImage(named: "meat1_front")
+            self.view.addSubview(object)
+            self.view.bringSubviewToFront(object)
+            
+            let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
+            object.addGestureRecognizer(panGestureRecognizer)
+            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(sender:)))
+            object.addGestureRecognizer(tapGesture)
+            object.isUserInteractionEnabled = true
+            objects.append(object)
+        }
+//        self.view.addSubview(object1)
+//        self.view.bringSubviewToFront(object1)
+//        let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
+//        object1.addGestureRecognizer(panGestureRecognizer)
+//        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(sender:)))
+//        object1.addGestureRecognizer(tapGesture)
+//        object1.isUserInteractionEnabled = true
+        
+        
         scoreView(view: scoreBox)
         scoreLabel.text = "\(score)"
         timeElapsed = 0
         
         // time
         timeProgress()
-        //score = 0
-        
-        //meats()
     }
     
     func timeProgress(){
@@ -140,40 +164,30 @@ class ViewController: UIViewController {
         progressView.progress = 0
         timer?.invalidate()
         timer = Timer.scheduledTimer(timeInterval: 0.01, target: self, selector: #selector(timerFired), userInfo: nil, repeats: true)
-        //reset()
-    }
-    
-    @objc func tmp(){
-        print("button clicked!")
-    }
-    
-    
-    
-    func meats(){
-        self.view.addSubview(object)
-        self.view.bringSubviewToFront(object)
-        let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
-        object.addGestureRecognizer(panGestureRecognizer)
-        object.isUserInteractionEnabled = true
-        
+        reset()
     }
     
     @objc func handlePan(sender: UIPanGestureRecognizer) {
         if sender.state == .ended {
             
             if sender.view!.frame.intersects(grilImageView.frame) {
-                DispatchQueue.global(qos: .userInitiated).async {
-                    var myTimer: Timer?
-                    //myTimer.
+                //print("here")
+                if let tappedView = sender.view as? Meat {
+                    if tappedView.isFront{
+                        tappedView.startBackTimer()
+                    }else{
+                        tappedView.startFrontTimer()
+                    }
                 }
             }else if sender.view!.frame.intersects(submitZone.frame) {
-                print("Arrive")
+                if let tappedView = sender.view as? Meat{
+                    //tappedView.finalScore()
+                    self.score += tappedView.meatScore
+                }
                 sender.view?.removeFromSuperview()
+                scoreLabel.text = "\(score)"
             }
-            //            else if sender.view!.frame.intersects(submitZone.frame) {
-            //                print("Arrive")
-            //                sender.view?.removeFromSuperview()
-            //            }
+
         }
         
         let translation = sender.translation(in: self.view)
@@ -183,6 +197,37 @@ class ViewController: UIViewController {
         }
         sender.setTranslation(CGPoint.zero, in: self.view)
         
+    }
+    
+    @objc func handleTap(sender: UITapGestureRecognizer){
+        if let tappedView = sender.view as? Meat {
+            if tappedView.isFront { // Flip to Back side
+                tappedView.pauseBackTimer()
+                if tappedView.backElapsedTime < roastTime{ // under cook
+                    tappedView.image = UIImage(named: "meat1_back")
+                }else if tappedView.backElapsedTime < overcookTime{
+                    tappedView.image = UIImage(named: "meat1_back_gril")
+                }else{
+                    tappedView.image = UIImage(named: "meat1_back_over")
+                }
+                tappedView.startFrontTimer()
+                print("backElapsed : \(tappedView.backElapsedTime)")
+            }
+            else {
+                tappedView.pauseFrontTimer()
+                if tappedView.frontElapsedTime < roastTime{ // under cook
+                    tappedView.image = UIImage(named: "meat1_front")
+                }else if tappedView.frontElapsedTime < overcookTime{
+                    tappedView.image = UIImage(named: "meat1_front_gril")
+                }else{
+                    tappedView.image = UIImage(named: "meat1_front_over")
+                }
+                tappedView.startBackTimer()
+                print("frontElapsed : \(tappedView.frontElapsedTime)")
+            }
+            
+            tappedView.isFront = !tappedView.isFront
+        }
     }
     
 }
