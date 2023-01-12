@@ -16,7 +16,6 @@
 		520AD8CD296DDDB800AB2928 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 520AD8CB296DDDB800AB2928 /* LaunchScreen.storyboard */; };
 		520AD8D5296DF4A700AB2928 /* DragDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520AD8D4296DF4A700AB2928 /* DragDraft.swift */; };
 		525A1AC9296ECF570005B567 /* Meat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 525A1AC8296ECF570005B567 /* Meat.swift */; };
-		529BA18A296FD91300F1AADA /* TimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 529BA189296FD91300F1AADA /* TimerView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,7 +30,6 @@
 		520AD8CE296DDDB800AB2928 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		520AD8D4296DF4A700AB2928 /* DragDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DragDraft.swift; sourceTree = "<group>"; };
 		525A1AC8296ECF570005B567 /* Meat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Meat.swift; sourceTree = "<group>"; };
-		529BA189296FD91300F1AADA /* TimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,7 +72,6 @@
 				520AD8CB296DDDB800AB2928 /* LaunchScreen.storyboard */,
 				520AD8CE296DDDB800AB2928 /* Info.plist */,
 				520AD8C6296DDDB600AB2928 /* RC_week4.xcdatamodeld */,
-				529BA189296FD91300F1AADA /* TimerView.swift */,
 			);
 			path = RC_week4;
 			sourceTree = "<group>";
@@ -153,7 +150,6 @@
 				520AD8D5296DF4A700AB2928 /* DragDraft.swift in Sources */,
 				520AD8C2296DDDB600AB2928 /* ViewController.swift in Sources */,
 				520AD8C8296DDDB600AB2928 /* RC_week4.xcdatamodeld in Sources */,
-				529BA18A296FD91300F1AADA /* TimerView.swift in Sources */,
 				520AD8BE296DDDB600AB2928 /* AppDelegate.swift in Sources */,
 				525A1AC9296ECF570005B567 /* Meat.swift in Sources */,
 				520AD8C0296DDDB600AB2928 /* SceneDelegate.swift in Sources */,

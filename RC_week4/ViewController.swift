@@ -18,7 +18,7 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var meat1: UIImageView!
     
-    let duration: Double = 30 // duration in seconds
+    let duration: Double = 60 // duration in seconds
     var timer: Timer?
     var progressView: UIProgressView!
     var timeElapsed: Double = 0
@@ -78,6 +78,14 @@ class ViewController: UIViewController {
     
     func reset(){
         score = 0
+        
+        // remove objects if remains
+        for subview in self.view.subviews {
+            if String(describing: type(of: subview)) == "Meat"{
+                subview.removeFromSuperview()
+            }     
+        }
+        
         for i in 0..<5{
             let object = Meat()
             object.backgroundColor = .clear
@@ -107,7 +115,7 @@ class ViewController: UIViewController {
     
     func timeProgress(){
         progressView = UIProgressView(progressViewStyle: .default)
-        progressView.frame = CGRect(x: 50, y: 20, width: view.frame.width - 100, height: 40)
+        progressView.frame = CGRect(x: 50, y: 20, width: screenSize.width - 100, height: 40)
         progressView.progress = 0
         progressView.tintColor = UIColor(named: "pointColor")
         //progressView.transform = CGAffineTransform(rotationAngle: .pi / 2)
@@ -200,7 +208,11 @@ class ViewController: UIViewController {
                 }else{
                     tappedView.image = UIImage(named: "meat1_back_over")
                 }
-                tappedView.startFrontTimer()
+                
+                if sender.view!.frame.intersects(grilImageView.frame){
+                    tappedView.startFrontTimer()
+                }
+                
                 print("backElapsed : \(tappedView.backElapsedTime)")
             }
             else {
@@ -212,7 +224,10 @@ class ViewController: UIViewController {
                 }else{
                     tappedView.image = UIImage(named: "meat1_front_over")
                 }
-                tappedView.startBackTimer()
+                
+                if sender.view!.frame.intersects(grilImageView.frame){
+                    tappedView.startBackTimer()
+                }
                 print("frontElapsed : \(tappedView.frontElapsedTime)")
             }
             
