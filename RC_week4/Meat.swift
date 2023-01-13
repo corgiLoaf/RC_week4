@@ -59,8 +59,8 @@ class Meat: UIImageView{
     }
     
     func finalScore(){
-        if (self.frontElapsedTime > 3) && (self.frontElapsedTime < 5){
-            if (self.backElapsedTime > 3) && (self.backElapsedTime < 5){
+        if (self.frontElapsedTime >= 3) && (self.frontElapsedTime < 5){
+            if (self.backElapsedTime >= 3) && (self.backElapsedTime < 5){
                 self.meatScore = 20
             }
         }else{

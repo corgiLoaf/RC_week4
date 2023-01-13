@@ -186,9 +186,18 @@ class ViewController: UIViewController {
                 }
             }else if sender.view!.frame.intersects(submitZone.frame) {
                 if let tappedView = sender.view as? Meat{
-                    tappedView.finalScore()
-                    self.score += tappedView.meatScore
-                    //print("score: \(tappedView.meatScore)")
+                    //tappedView.finalScore()
+                    if (tappedView.frontElapsedTime >= roastTime) && (tappedView.frontElapsedTime < overcookTime){
+                        if (tappedView.backElapsedTime >= roastTime) && (tappedView.backElapsedTime < overcookTime){
+                            tappedView.meatScore = 20
+                            score += 20
+                        }
+                    }else{
+                        tappedView.meatScore = 0
+                    }
+                    
+                    print("meatscore - score: \(tappedView.meatScore)")
+                    print("total score - score: \(score)")
                 }
                 sender.view?.removeFromSuperview()
                 scoreLabel.text = "\(score)"
@@ -198,7 +207,6 @@ class ViewController: UIViewController {
                     timerEnded()
                 }
             }
-            
         }
         
         let translation = sender.translation(in: self.view)
