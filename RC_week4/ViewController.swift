@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import AVFoundation
 
 class ViewController: UIViewController {
     
@@ -31,6 +32,8 @@ class ViewController: UIViewController {
     let roastTime = 3.0
     let overcookTime = 5.0
     
+    var player: AVAudioPlayer?
+    
     var objects: [Meat] = []
     let frame =  CGRect(x: 100, y: 100, width: 100, height: 50)
     
@@ -45,14 +48,14 @@ class ViewController: UIViewController {
         let restartButton = UIButton(frame: CGRect(x: screenSize.width/2 - 40, y: screenSize.height/2 - 50, width: 80, height: 60))
         //restartButton.setTitle("재시작", for: .normal)
         restartButton.center = CGPoint(x: screenSize.width/2, y: screenSize.height/2 + 40.0)
-//        restartButton.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        //        restartButton.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         let symbolConfig = UIImage.SymbolConfiguration(font: UIFont.systemFont(ofSize: 32, weight: .bold))
         restartButton.setImage(UIImage(systemName: "gobackward", withConfiguration: symbolConfig), for: .normal)
         restartButton.backgroundColor = UIColor(named: "pointColor")
         restartButton.tintColor = .white
-//        restartButton.backgroundColor = UIColor(named: "backgroundColor")
+        //        restartButton.backgroundColor = UIColor(named: "backgroundColor")
         restartButton.layer.cornerRadius = 10
-
+        
         restartButton.addTarget(self, action: #selector(restartTimer), for: .touchUpInside)
         endview.addSubview(restartButton)
         
@@ -87,7 +90,7 @@ class ViewController: UIViewController {
         for subview in self.view.subviews {
             if String(describing: type(of: subview)) == "Meat"{
                 subview.removeFromSuperview()
-            }     
+            }
         }
         
         for i in 0..<totalCnt{
@@ -95,7 +98,7 @@ class ViewController: UIViewController {
             object.backgroundColor = .clear
             object.frame.origin = location[i]
             object.frame.size = CGSize(width: frame.width, height: frame.height)
-//            object.frame = CGRect(x: CGFloat(80 + (i*20)), y:  CGFloat(80 + (i*20)), width: frame.width, height: frame.height)
+            //            object.frame = CGRect(x: CGFloat(80 + (i*20)), y:  CGFloat(80 + (i*20)), width: frame.width, height: frame.height)
             object.image = UIImage(named: "meat1_front")
             self.view.addSubview(object)
             self.view.bringSubviewToFront(object)
@@ -126,9 +129,9 @@ class ViewController: UIViewController {
         progressView.tintColor = UIColor(named: "pointColor")
         //progressView.transform = CGAffineTransform(rotationAngle: .pi / 2)
         self.view.addSubview(progressView)
-
+        
         timer = Timer.scheduledTimer(timeInterval: 0.01, target: self, selector: #selector(timerFired), userInfo: nil, repeats: true)
-
+        
     }
     
     
@@ -146,7 +149,7 @@ class ViewController: UIViewController {
     func timerEnded() {
         
         // score label
-//        CGRect(x: screenSize.width/2 - 40, y: screenSize.height/2 - 50, width: 80, height: 60)
+        //        CGRect(x: screenSize.width/2 - 40, y: screenSize.height/2 - 50, width: 80, height: 60)
         let finalScoreLabel = UILabel(frame: CGRect(x: screenSize.width/2 , y: screenSize.height/2, width: 100, height: 100))
         finalScoreLabel.center = CGPoint(x: (view.center.x), y: view.center.y - CGFloat(30.0))
         finalScoreLabel.text = "\(score) 점"
@@ -157,7 +160,7 @@ class ViewController: UIViewController {
         self.view.addSubview(endView)
         //view.addSubview(restartButton)
     }
-
+    
     @objc func restartTimer() {
         // Restart the timer
         endView.removeFromSuperview()
@@ -172,9 +175,8 @@ class ViewController: UIViewController {
     @objc func handlePan(sender: UIPanGestureRecognizer) {
         if sender.state == .ended {
             //print("\(sender.view?.frame.origin)")
-            
             if sender.view!.frame.intersects(grilImageView.frame) {
-                //print("here")
+                playSound()
                 if let tappedView = sender.view as? Meat {
                     if tappedView.isFront{
                         tappedView.startBackTimer()
@@ -196,7 +198,7 @@ class ViewController: UIViewController {
                     timerEnded()
                 }
             }
-
+            
         }
         
         let translation = sender.translation(in: self.view)
@@ -209,7 +211,7 @@ class ViewController: UIViewController {
     }
     
     @objc func handleTap(sender: UITapGestureRecognizer){
-
+        
         if let tappedView = sender.view as? Meat {
             print("\(tappedView.frame.origin)")
             if tappedView.isFront { // Flip to Back side
@@ -246,6 +248,18 @@ class ViewController: UIViewController {
             
             tappedView.isFront = !tappedView.isFront
         }
+    }
+    
+    // audio
+    func playSound() {
+        
+        guard let url = Bundle.main.url(forResource: "grilSound", withExtension: "mp3") else {return}
+        do {player = try AVAudioPlayer(contentsOf: url)
+            player?.play()
+        }catch let error{
+            print("audio error")
+        }
+        
     }
     
 }
