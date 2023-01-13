@@ -25,13 +25,16 @@ class ViewController: UIViewController {
     var score: Int = 0
     let screenSize: CGRect = UIScreen.main.bounds
     
+    var submitCnt: Int = 0
+    let totalCnt: Int = 7
+    
     let roastTime = 3.0
     let overcookTime = 5.0
     
     var objects: [Meat] = []
     let frame =  CGRect(x: 100, y: 100, width: 100, height: 50)
     
-    let location: [CGPoint] = [CGPoint(x: 80.0, y: 80.0), CGPoint(x:100.0, y:120.0), CGPoint(x:145.0, y:70.0), CGPoint(x:125.0, y:60.0), CGPoint(x:180.0, y:90.0), CGPoint(x:190.0, y:120)]
+    let location: [CGPoint] = [CGPoint(x: 67.0, y: 80.0), CGPoint(x:73.0, y:114), CGPoint(x:171, y:90), CGPoint(x:117, y:50), CGPoint(x:168, y:64), CGPoint(x:195, y:120), CGPoint(x: 112, y: 136)]
     
     
     var endView: UIView = {
@@ -61,6 +64,7 @@ class ViewController: UIViewController {
     // ------------------------
     // MARK : View Load
     override func viewDidLoad() {
+        score = 0
         super.viewDidLoad()
         reset()
         //self.view.addSubview(timerProgressView)
@@ -86,7 +90,7 @@ class ViewController: UIViewController {
             }     
         }
         
-        for i in 0..<5{
+        for i in 0..<totalCnt{
             let object = Meat()
             object.backgroundColor = .clear
             object.frame.origin = location[i]
@@ -101,6 +105,8 @@ class ViewController: UIViewController {
             let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(sender:)))
             object.addGestureRecognizer(tapGesture)
             object.isUserInteractionEnabled = true
+            object.tag = i
+            
             objects.append(object)
         }
         
@@ -184,6 +190,11 @@ class ViewController: UIViewController {
                 }
                 sender.view?.removeFromSuperview()
                 scoreLabel.text = "\(score)"
+                submitCnt += 1
+                if submitCnt == totalCnt {
+                    timer?.invalidate()
+                    timerEnded()
+                }
             }
 
         }
@@ -198,7 +209,9 @@ class ViewController: UIViewController {
     }
     
     @objc func handleTap(sender: UITapGestureRecognizer){
+
         if let tappedView = sender.view as? Meat {
+            print("\(tappedView.frame.origin)")
             if tappedView.isFront { // Flip to Back side
                 tappedView.pauseBackTimer()
                 if tappedView.backElapsedTime < roastTime{ // under cook
@@ -213,7 +226,7 @@ class ViewController: UIViewController {
                     tappedView.startFrontTimer()
                 }
                 
-                print("backElapsed : \(tappedView.backElapsedTime)")
+                print("index: \(tappedView.tag) - backElapsed : \(tappedView.backElapsedTime)")
             }
             else {
                 tappedView.pauseFrontTimer()
@@ -228,7 +241,7 @@ class ViewController: UIViewController {
                 if sender.view!.frame.intersects(grilImageView.frame){
                     tappedView.startBackTimer()
                 }
-                print("frontElapsed : \(tappedView.frontElapsedTime)")
+                print("index: \(tappedView.tag) - frontElapsed : \(tappedView.frontElapsedTime)")
             }
             
             tappedView.isFront = !tappedView.isFront
