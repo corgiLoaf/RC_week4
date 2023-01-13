@@ -14,7 +14,6 @@
 		520AD8C8296DDDB600AB2928 /* RC_week4.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 520AD8C6296DDDB600AB2928 /* RC_week4.xcdatamodeld */; };
 		520AD8CA296DDDB800AB2928 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 520AD8C9296DDDB800AB2928 /* Assets.xcassets */; };
 		520AD8CD296DDDB800AB2928 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 520AD8CB296DDDB800AB2928 /* LaunchScreen.storyboard */; };
-		520AD8D5296DF4A700AB2928 /* DragDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520AD8D4296DF4A700AB2928 /* DragDraft.swift */; };
 		525A1AC9296ECF570005B567 /* Meat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 525A1AC8296ECF570005B567 /* Meat.swift */; };
 /* End PBXBuildFile section */
 
@@ -28,7 +27,6 @@
 		520AD8C9296DDDB800AB2928 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		520AD8CC296DDDB800AB2928 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		520AD8CE296DDDB800AB2928 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		520AD8D4296DF4A700AB2928 /* DragDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DragDraft.swift; sourceTree = "<group>"; };
 		525A1AC8296ECF570005B567 /* Meat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Meat.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -67,7 +65,6 @@
 				520AD8BF296DDDB600AB2928 /* SceneDelegate.swift */,
 				520AD8C1296DDDB600AB2928 /* ViewController.swift */,
 				520AD8C3296DDDB600AB2928 /* Main.storyboard */,
-				520AD8D4296DF4A700AB2928 /* DragDraft.swift */,
 				520AD8C9296DDDB800AB2928 /* Assets.xcassets */,
 				520AD8CB296DDDB800AB2928 /* LaunchScreen.storyboard */,
 				520AD8CE296DDDB800AB2928 /* Info.plist */,
@@ -147,7 +144,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				520AD8D5296DF4A700AB2928 /* DragDraft.swift in Sources */,
 				520AD8C2296DDDB600AB2928 /* ViewController.swift in Sources */,
 				520AD8C8296DDDB600AB2928 /* RC_week4.xcdatamodeld in Sources */,
 				520AD8BE296DDDB600AB2928 /* AppDelegate.swift in Sources */,
